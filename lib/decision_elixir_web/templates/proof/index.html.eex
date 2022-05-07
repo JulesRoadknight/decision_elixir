@@ -1,0 +1,4 @@
+<section class="phx-hero">
+  <h1><%= gettext "The Idea" %></h1>
+  <p>Complex Decisions, Made Simply</p>
+</section>

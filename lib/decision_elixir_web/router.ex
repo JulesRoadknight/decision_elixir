@@ -18,6 +18,7 @@ defmodule DecisionElixirWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :index
+    get "/proof_of_concept", ProofController, :index
   end
 
   # Other scopes may use custom stacks.
