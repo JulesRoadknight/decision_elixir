@@ -1,5 +1,10 @@
 # DecisionElixir
 
+Requires Elixir, which can be installed with Homebrew:
+$ brew install elixir
+
+Requires Postgres
+
 To start your Phoenix server:
 
   * Install dependencies with `mix deps.get`
