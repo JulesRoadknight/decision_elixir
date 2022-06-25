@@ -1,10 +1,10 @@
 [
     {
         "name": "Win",
-        "chance": 10
+        "chance": 1
     },
     {
         "name": "Lose",
-        "chance": 1000
+        "chance": 1
     }
 ]
