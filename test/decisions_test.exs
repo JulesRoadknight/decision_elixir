@@ -47,7 +47,7 @@ defmodule DecisionsTest do
   test "fixes a result when first character is `B`" do
     person = %Person{id: 1, genes: "Baaa"}
     decisions_path = "test/fixedWhenFirstB.json"
-    assert Decisions.make_decision(person, decisions_path) == "Only for B"
+    assert Decisions.make_decision(person, decisions_path) == "Certainty for B"
   end
 
   test "choices with modifiers removes choices without modifiers" do
@@ -55,7 +55,7 @@ defmodule DecisionsTest do
     { _status, decisions } = Decisions.get_decisions(decisions_path)
 
     expected_result = [%{
-      "name" => "Only for B",
+      "name" => "Certainty for B",
       "chance" => 0,
       "modifiers" => [%{
         "position" => 0,
@@ -65,7 +65,7 @@ defmodule DecisionsTest do
       %{
         "position" => 0,
         "match" => "C",
-        "weight" => 1
+        "weight" => 10
       }]
     }]
 
@@ -74,7 +74,7 @@ defmodule DecisionsTest do
 
   test "modifiers with certainty only returns certainties" do
     input = [%{
-      "name" => "Only for B",
+      "name" => "Certainty for B",
       "chance" => 0,
       "modifiers" => [%{
         "position" => 0,
@@ -90,7 +90,7 @@ defmodule DecisionsTest do
     }]
 
     expected_result = [%{
-      "name" => "Only for B",
+      "name" => "Certainty for B",
       "chance" => 0,
       "modifiers" => [%{
         "position" => 0,
@@ -105,7 +105,7 @@ defmodule DecisionsTest do
   test "loads to modifiers with certainty" do
     decisions_path = "test/fixedWhenFirstB.json"
     expected_result = [%{
-      "name" => "Only for B",
+      "name" => "Certainty for B",
       "chance" => 0,
       "modifiers" => [%{
         "position" => 0,
@@ -126,7 +126,7 @@ defmodule DecisionsTest do
           "chance" => 1
       },
       %{
-          "name" => "Only for B",
+          "name" => "Certainty for B",
           "chance" => 0,
           "modifiers" => [%{
             "position" => 0,
@@ -136,7 +136,7 @@ defmodule DecisionsTest do
           %{
               "position" => 0,
               "match" => "C",
-              "weight" => 1
+              "weight" => 10
             }]
       }
     ]
@@ -259,7 +259,7 @@ defmodule DecisionsTest do
   test "does not match a choice when it contains the character in position" do
     person = %Person{id: 1, genes: "aaaa"}
     choice = [%{
-      "name"=> "Only for B",
+      "name"=> "Certainty for B",
       "chance"=> 0,
       "modifiers"=> [%{
         "position"=> 0,
@@ -274,7 +274,7 @@ defmodule DecisionsTest do
     }]
 
     expected_result = [%{
-      "name"=> "Only for B",
+      "name"=> "Certainty for B",
       "chance"=> 0,
       "modifiers"=> []
     }]
@@ -283,7 +283,7 @@ defmodule DecisionsTest do
 
   test "returns a choice when it contains a modifier with weight 0" do
     choice = [%{
-      "name"=> "Only for B",
+      "name"=> "Certainty for B",
       "chance"=> 0,
       "modifiers"=> [%{
         "position"=> 0,
@@ -296,6 +296,60 @@ defmodule DecisionsTest do
         "weight"=> 1
         }]
     }]
-    assert Decisions.modifiers_with_certainty(choice) == [%{"chance" => 0, "modifiers" => [%{"match" => "B", "position" => 0, "weight" => 0}], "name" => "Only for B"}]
+    assert Decisions.modifiers_with_certainty(choice) == [%{"chance" => 0, "modifiers" => [%{"match" => "B", "position" => 0, "weight" => 0}], "name" => "Certainty for B"}]
+  end
+
+  test "can increase the chance of an 0 chance choice" do
+    person = %Person{id: 1, genes: "Caaa"}
+    decisions_path = "test/fixedWhenFirstB.json"
+    assert Decisions.make_decision(person, decisions_path) in ["Not B", "Certainty for B"]
+  end
+
+  test "has an increased chance when the modifier matches" do
+    person = %Person{id: 1, genes: "Aaaa"}
+    decisions_path = "test/modifiesForA.json"
+    assert Decisions.make_decision(person, decisions_path) == "Not Unless Modified"
+  end
+
+  test "has a decreased chance when the modifier matches" do
+    person = %Person{id: 1, genes: "Zaaa"}
+    decisions_path = "test/modifiesNegatively.json"
+    assert Decisions.make_decision(person, decisions_path) == "Not Unless Modified"
+  end
+
+  test "#matching_modifiers can apply negative modifiers" do
+    person = %Person{id: 1, genes: "ZaBa"}
+    modifiers = [%{
+      "position" => 0,
+      "match" => "Z",
+      "weight" => -1
+    }]
+
+    assert Decisions.matching_modifiers(person, modifiers) == -1
+  end
+
+  test "#matching_modifiers can apply multiple modifiers" do
+    person = %Person{id: 1, genes: "AaBa"}
+    modifiers = [%{
+      "position" => 0,
+      "match" => "A",
+      "weight" => 1
+    },
+    %{
+      "position" => 2,
+      "match" => "B",
+      "weight" => 9
+    }]
+
+    assert Decisions.matching_modifiers(person, modifiers) == 10
+  end
+
+  test "matching_modifiers does not update chance when no modifiers" do
+    person = %Person{id: 1, genes: "AaBa"}
+    decisions = [%{
+      "name" => "Not Unless Modified",
+      "chance" => 1,
+    }]
+    assert Decisions.apply_modifiers(person, decisions) == decisions
   end
 end

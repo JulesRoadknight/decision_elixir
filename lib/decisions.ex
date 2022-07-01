@@ -12,10 +12,28 @@ defmodule Decisions do
   defp evaluate_choices(person, decisions) do
     if length(decisions) > 0 do
       check_for_certainties(person, decisions) ||
-      sum_choices(decisions) |> :rand.uniform |> decision_result(decisions)
+      apply_modifiers(person, decisions) |> sum_choices |> :rand.uniform |> decision_result(apply_modifiers(person, decisions))
     else
       "Do nothing"
     end
+  end
+
+  def apply_modifiers(person, decisions) do
+    Enum.map(decisions, fn decision ->
+      if Map.has_key?(decision, "modifiers") do
+        update_in(
+          decision["chance"],
+          &(&1 + matching_modifiers(person, decision["modifiers"])))
+      else
+        decision
+      end
+    end)
+  end
+
+  def matching_modifiers(person, modifiers) do
+    Enum.reduce_while(modifiers, 0, fn modifier, acc ->
+      if String.at(person.genes, modifier["position"]) == modifier["match"], do: {:cont, acc + modifier["weight"]}, else: {:cont, acc}
+    end)
   end
 
   def sum_choices(decisions) do
@@ -46,7 +64,7 @@ defmodule Decisions do
 
   def modifiers_with_certainty(decisions) do
     update_in(decisions, [Access.all(), "modifiers"],
-      &Enum.filter(&1, fn e -> e["weight"] == 0 end))
+      &Enum.filter(&1, fn modifier -> modifier["weight"] == 0 end))
   end
 
   def matching_certainties(certainties, person) do

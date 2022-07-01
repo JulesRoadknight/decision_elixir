@@ -4,7 +4,7 @@
         "chance": 1
     },
     {
-        "name": "Only for B",
+        "name": "Certainty for B",
         "chance": 0,
         "modifiers": [{
           "position": 0,
@@ -14,7 +14,7 @@
         {
             "position": 0,
             "match": "C",
-            "weight": 1  
+            "weight": 10
           }]
     }
 ]
