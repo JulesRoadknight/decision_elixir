@@ -54,7 +54,8 @@ defmodule WorldTest do
     assert World.take_turn(input) == expected_output
   end
 
-  test "#population_make_decisions" do
+  test "#apply_survival_tick" do
+    decisions_path = "test/blankDecisions.json"
     input_population = [
       %Person{id: 1, genes: "aaaa", survival_chance: 100},
       %Person{id: 2, genes: "bbbbcccc", survival_chance: 0}
@@ -64,19 +65,46 @@ defmodule WorldTest do
       %Person{id: 2, genes: "bbbbcccc", survival_chance: -1}
     ]
     input = %{
-      "decisions" => "test/blankDecisions.json",
+      "decisions" => decisions_path,
       "world" => %{
         "turn" => 0,
         "population" => input_population
       }
     }
     expected_output = %{
-      "decisions" => "test/blankDecisions.json",
+      "decisions" => decisions_path,
       "world" => %{
         "turn" => 0,
         "population" => output_population
       }
     }
-    assert World.population_make_decisions(input) == expected_output
+    assert World.apply_survival_tick(input) == expected_output
+  end
+
+  test "#make_decisions modifies survival_chance based on result of decision" do
+    decisions_path = "test/oneDecision.json"
+    input_population = [
+      %Person{id: 1, genes: "aaaa", survival_chance: 50},
+      %Person{id: 2, genes: "bbbbcccc", survival_chance: 0}
+    ]
+    output_population = [
+      %Person{id: 1, genes: "aaaa", survival_chance: 52},
+      %Person{id: 2, genes: "bbbbcccc", survival_chance: 2}
+    ]
+    input = %{
+      "decisions" => decisions_path,
+      "world" => %{
+        "turn" => 0,
+        "population" => input_population
+      }
+    }
+    expected_output = %{
+      "decisions" => decisions_path,
+      "world" => %{
+        "turn" => 0,
+        "population" => output_population
+      }
+    }
+    assert World.make_decisions(input) == expected_output
   end
 end
