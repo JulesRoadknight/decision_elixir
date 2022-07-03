@@ -2,6 +2,7 @@ defmodule World do
   def take_turn(state) do
     make_decisions(state) |>
     apply_survival_tick |>
+    survival_check |>
     tick
   end
 
@@ -27,6 +28,16 @@ defmodule World do
     Enum.reduce(population, [], fn person, acc ->
       [%Person{person | survival_chance: person.survival_chance - 1} | acc ]
     end) |> Enum.reverse()
+  end
+
+  defp survival_check(state) do
+    update_in(state["world"]["population"],
+      &Enum.filter(&1, fn person -> survives?(person) end)
+    )
+  end
+
+  defp survives?(person) do
+    person.survival_chance >= 50
   end
 
   defp tick(state) do
