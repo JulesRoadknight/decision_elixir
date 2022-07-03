@@ -12,7 +12,7 @@ defmodule Decisions do
   defp evaluate_choices(person, decisions) do
     if length(decisions) > 0 do
       check_for_certainties(person, decisions) ||
-      apply_modifiers(person, decisions) |> sum_choices |> :rand.uniform |> decision_result(apply_modifiers(person, decisions))
+      apply_modifiers(person, decisions) |> sum_chance_of_choices |> :rand.uniform |> decision_result(apply_modifiers(person, decisions))
     else
       "Do nothing"
     end
@@ -36,7 +36,7 @@ defmodule Decisions do
     end)
   end
 
-  def sum_choices(decisions) do
+  defp sum_chance_of_choices(decisions) do
     Enum.reduce(decisions, 0, fn choice, acc -> choice["chance"] + acc end)
   end
 

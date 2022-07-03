@@ -26,12 +26,6 @@ defmodule DecisionsTest do
     assert Decisions.make_decision(person, decisions_path) in ["Win", "Lose"]
   end
 
-  test "sums total choice of decisions" do
-    decisions_path = "test/twoDecisions.json"
-    { _status, decisions_list} = Decisions.get_decisions(decisions_path)
-    assert Decisions.sum_choices(decisions_list) == 2
-  end
-
   test "finds matching result of decision" do
     decisions_path = "test/twoDecisions.json"
     { _status, decisions_list} = Decisions.get_decisions(decisions_path)
@@ -344,7 +338,7 @@ defmodule DecisionsTest do
     assert Decisions.matching_modifiers(person, modifiers) == 10
   end
 
-  test "matching_modifiers does not update chance when no modifiers" do
+  test "#apply_modifiers does not update chance when no modifiers" do
     person = %Person{id: 1, genes: "AaBa"}
     decisions = [%{
       "name" => "Not Unless Modified",
