@@ -1,5 +1,9 @@
 defmodule NaturalSelection do
-  def run(input) do
-    World.take_turn(input)
+  def run(state) do
+      World.make_decisions(state) |>
+      World.apply_survival_tick |>
+      World.survival_check |>
+      World.reproduction_check |>
+      World.tick
   end
 end

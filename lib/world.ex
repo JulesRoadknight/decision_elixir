@@ -1,11 +1,4 @@
 defmodule World do
-  def take_turn(state) do
-    make_decisions(state) |>
-    apply_survival_tick |>
-    survival_check |>
-    tick
-  end
-
   def make_decisions(state) do
     update_in(state["world"]["population"],
       &population_decision_loop(&1, state["decisions"])
@@ -30,17 +23,37 @@ defmodule World do
     end) |> Enum.reverse()
   end
 
-  defp survival_check(state) do
+  def survival_check(state) do
     update_in(state["world"]["population"],
       &Enum.filter(&1, fn person -> survives?(person) end)
     )
+  end
+
+  def reproduction_check(state) do
+    if state["reproduction_frequency"] == state["world"]["turn"] do
+      update_in(state["world"]["population"],
+        &pair_off_reproduction(&1, state["agents_total"])
+      )
+    else
+      state
+    end
+  end
+
+  defp pair_off_reproduction(population, agents_total) do
+    offspring = Enum.shuffle(population) |>
+    Enum.chunk_every(2) |>
+    Enum.map(
+      &Reproduction.standard_reproduction(
+        &1,
+        agents_total))
+    Enum.concat(population, offspring)
   end
 
   defp survives?(person) do
     person.survival_chance >= 50
   end
 
-  defp tick(state) do
+  def tick(state) do
     update_in(state["world"]["turn"], &(&1 + 1))
   end
 end
