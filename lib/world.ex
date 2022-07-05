@@ -34,7 +34,7 @@ defmodule World do
     end
 
   def reproduction_check(state) do
-    if state["reproduction_frequency"] == state["world"]["turn"] do
+    if state["world"]["turn"] > 0 && rem(state["world"]["turn"], state["reproduction_frequency"]) == 0 do
       offspring = pair_off_reproduction(state["world"]["population"], state["agents_total"])
       update_in(state, ["world", "population"],
         &Enum.concat(&1, offspring))|>

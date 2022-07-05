@@ -14,6 +14,7 @@ defmodule NaturalSelectionTest do
     ]
     input = %{
       "decisions" => decisions_path,
+      "reproduction_frequency" => 5,
       "world" => %{
         "turn" => 0,
         "population" => input_population
@@ -21,6 +22,7 @@ defmodule NaturalSelectionTest do
     }
     expected_output = %{
       "decisions" => decisions_path,
+      "reproduction_frequency" => 5,
       "world" => %{
         "turn" => 1,
         "population" => output_population
@@ -41,6 +43,7 @@ defmodule NaturalSelectionTest do
     ]
     input = %{
       "decisions" => decisions_path,
+      "reproduction_frequency" => 5,
       "world" => %{
         "turn" => 0,
         "population" => input_population
@@ -48,6 +51,7 @@ defmodule NaturalSelectionTest do
     }
     expected_output = %{
       "decisions" => decisions_path,
+      "reproduction_frequency" => 5,
       "world" => %{
         "turn" => 1,
         "population" => output_population
@@ -70,6 +74,7 @@ defmodule NaturalSelectionTest do
     ]
     input = %{
       "decisions" => decisions_path,
+      "reproduction_frequency" => 5,
       "world" => %{
         "turn" => 0,
         "population" => input_population
@@ -77,6 +82,7 @@ defmodule NaturalSelectionTest do
     }
     expected_output = %{
       "decisions" => decisions_path,
+      "reproduction_frequency" => 5,
       "world" => %{
         "turn" => 1,
         "population" => output_population
@@ -129,7 +135,7 @@ defmodule NaturalSelectionTest do
       "agents_total" => 11,
       "reproduction_frequency" => 5,
       "world" => %{
-        "turn" => 5,
+        "turn" => 15,
         "population" => input_population
       }
     }
