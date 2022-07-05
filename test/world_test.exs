@@ -180,26 +180,4 @@ defmodule WorldTest do
     assert length(World.reproduction_check(input)["world"]["population"]) == 10
     assert World.reproduction_check(input)["agents_total"] == 14
   end
-
-  test "#pair_off_reproduction produces a child for every existing pair" do
-    input_population = [
-      %Person{id: 1, genes: "abcd", survival_chance: 100},
-      %Person{id: 2, genes: "efgh", survival_chance: 51},
-      %Person{id: 5, genes: "ijkl", survival_chance: 100},
-      %Person{id: 7, genes: "mnop", survival_chance: 51},
-      %Person{id: 19, genes: "qrst", survival_chance: 100},
-      %Person{id: 100, genes: "uvwx", survival_chance: 51},
-      %Person{id: 10000, genes: "yzzz", survival_chance: 51}
-    ]
-    assert length(World.pair_off_reproduction(input_population, 0)) === 3
-  end
-
-  test "#pair_off_loop produces a child for every existing pair" do
-    input_population = [
-      [%Person{id: 1, genes: "abcd", survival_chance: 100}, %Person{id: 2, genes: "efgh", survival_chance: 51}],
-      [%Person{id: 5, genes: "ijkl", survival_chance: 100}, %Person{id: 7, genes: "mnop", survival_chance: 51}],
-      [%Person{id: 19, genes: "qrst", survival_chance: 100}, %Person{id: 100, genes: "uvwx", survival_chance: 51}],
-    ]
-    assert length(World.pair_off_loop(input_population, 0, [])) === 3
-  end
 end

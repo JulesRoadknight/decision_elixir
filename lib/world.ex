@@ -35,28 +35,13 @@ defmodule World do
 
   def reproduction_check(state) do
     if state["world"]["turn"] > 0 && rem(state["world"]["turn"], state["reproduction_frequency"]) == 0 do
-      offspring = pair_off_reproduction(state["world"]["population"], state["agents_total"])
+      offspring = Reproduction.pair_off_reproduction(state["world"]["population"], state["agents_total"])
       update_in(state, ["world", "population"],
         &Enum.concat(&1, offspring))|>
       update_in(["agents_total"],
         &(&1 + length(offspring)))
     else
       state
-    end
-  end
-
-  def pair_off_reproduction(population, agents_total) do
-    Enum.shuffle(population) |>
-    Enum.chunk_every(2, 2, :discard) |>
-      pair_off_loop(agents_total, [])
-  end
-
-  def pair_off_loop([first_pair | remaining_pairs], agents_total, children) do
-    child = Reproduction.standard_reproduction(first_pair, agents_total)
-    if length(remaining_pairs) > 0 do
-      pair_off_loop(remaining_pairs, agents_total + 1, [child | children])
-    else
-      Enum.reverse([child | children])
     end
   end
 
