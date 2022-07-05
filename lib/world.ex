@@ -29,28 +29,35 @@ defmodule World do
     )
   end
 
+    defp survives?(person) do
+      person.survival_chance >= 50
+    end
+
   def reproduction_check(state) do
     if state["reproduction_frequency"] == state["world"]["turn"] do
-      update_in(state["world"]["population"],
-        &pair_off_reproduction(&1, state["agents_total"])
-      )
+      offspring = pair_off_reproduction(state["world"]["population"], state["agents_total"])
+      update_in(state, ["world", "population"],
+        &Enum.concat(&1, offspring))|>
+      update_in(["agents_total"],
+        &(&1 + length(offspring)))
     else
       state
     end
   end
 
-  defp pair_off_reproduction(population, agents_total) do
-    offspring = Enum.shuffle(population) |>
-    Enum.chunk_every(2) |>
-    Enum.map(
-      &Reproduction.standard_reproduction(
-        &1,
-        agents_total))
-    Enum.concat(population, offspring)
+  def pair_off_reproduction(population, agents_total) do
+    Enum.shuffle(population) |>
+    Enum.chunk_every(2, 2, :discard) |>
+      pair_off_loop(agents_total, [])
   end
 
-  defp survives?(person) do
-    person.survival_chance >= 50
+  def pair_off_loop([first_pair | remaining_pairs], agents_total, children) do
+    child = Reproduction.standard_reproduction(first_pair, agents_total)
+    if length(remaining_pairs) > 0 do
+      pair_off_loop(remaining_pairs, agents_total + 1, [child | children])
+    else
+      Enum.reverse([child | children])
+    end
   end
 
   def tick(state) do
