@@ -1,21 +1,56 @@
 [
     {
         "name": "First",
-        "chance": 17
+        "chance": 17,
+        "modifiers": [{
+          "position": 0,
+          "match": "[T-Z]",
+          "weight": 3
+        },
+        {
+          "position": 1,
+          "match": "[T-Z]",
+          "weight": 3
+        },
+        {
+          "position": 2,
+          "match": "[T-Z]",
+          "weight": 15
+        },
+        {
+          "position": 0,
+          "match": "[a-m]",
+          "weight": -3
+        },  
+        {
+          "position": 1,
+          "match": "[a-m]",
+          "weight": -3
+        },
+        {
+          "position": 2,
+          "match": "[a-m]",
+          "weight": -3
+        },
+        {
+          "position": 3,
+          "match": "[a-m]",
+          "weight": -3
+        }]
     },
     {
         "name": "Second",
         "chance": 30,
         "modifiers": [{
-          "position": 0,
-          "match": "B",
-          "weight": 0  
-        },
+          "position": 1,
+          "match": "[a-m]",
+          "weight": -10
+        }, 
         {
-            "position": 0,
-            "match": "C",
-            "weight": 10
-          }]
+          "position": 1,
+          "match": "[M-Z]",
+          "weight": 15
+        }]
     },
     {
       "name": "Third",
@@ -23,10 +58,35 @@
     },
     {
       "name": "Fourth",
-      "chance": 13
+      "chance": 13,
+      "modifiers" : [{
+        "position": 0,
+        "match": "[T-Z]",
+        "weight": 3
+      },
+      {
+        "position": 1,
+        "match": "[T-Z]",
+        "weight": 3
+      }]
     },
     {
       "name": "Fifth",
-      "chance": 10
+      "chance": 10,
+      "modifiers": [{
+        "position": 0,
+        "match": "[a-h]",
+        "weight": 15
+      },
+      {
+        "position": 1,
+        "match": "[a-f]",
+        "weight": 20
+      },
+      {
+        "position": 3,
+        "match": "[a-h]",
+        "weight": 50
+      }]
     }
 ]
