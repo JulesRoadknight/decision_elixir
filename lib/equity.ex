@@ -17,4 +17,8 @@ defmodule Equity do
     Enum.reduce(population, 0, fn person, acc -> person_total(person, decisions_path) + acc end)
     / length(population)
   end
+
+  def population_beating_unmodified(population, decisions_path) do
+    population_average(population, decisions_path) > unmodified_decisions(decisions_path)
+  end
 end

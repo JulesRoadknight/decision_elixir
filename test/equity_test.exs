@@ -29,4 +29,20 @@ defmodule EquityTest do
     decisions_path = "test/naturalSelectionFiveDecisions.json"
     assert Equity.population_average(population, decisions_path) |> Float.round(2) == -1.02
   end
+
+  test "#population_beating_unmodified returns true if population outperforms unmodified equity" do
+    population = [
+      %Person{id: 1, genes: "jQTZ", survival_chance: 100},
+      %Person{id: 1, genes: "jQTZ", survival_chance: 100},
+      %Person{id: 1, genes: "jQTZ", survival_chance: 100},
+      %Person{id: 1, genes: "Cmaf", survival_chance: 100}]
+    decisions_path = "test/naturalSelectionFiveDecisions.json"
+    assert Equity.population_beating_unmodified(population, decisions_path) == true
+  end
+
+  test "#population_beating_unmodified returns false if population underperforms (or matches) unmodified equity" do
+    population = [%Person{id: 1, genes: "jQTZ", survival_chance: 100}, %Person{id: 1, genes: "Cmaf", survival_chance: 100}]
+    decisions_path = "test/naturalSelectionFiveDecisions.json"
+    assert Equity.population_beating_unmodified(population, decisions_path) == false
+  end
 end
