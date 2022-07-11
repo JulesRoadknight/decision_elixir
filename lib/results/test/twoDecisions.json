@@ -1,0 +1,10 @@
+[
+    {
+        "name": "Win",
+        "result": 5
+    },
+    {
+        "name": "Lose",
+        "result": -5
+    }
+]

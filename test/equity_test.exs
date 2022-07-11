@@ -2,25 +2,31 @@ defmodule EquityTest do
   use ExUnit.Case
   doctest Equity
 
-  test "#decisions_equity returns unmodified totals of equity" do
+  test "#unmodified_decisions returns unmodified totals of equity" do
     decisions_path = "test/naturalSelectionFiveDecisions.json"
-    assert Equity.unmodified_decisions_equity(decisions_path) == -0.3
+    assert Equity.unmodified_decisions(decisions_path) == -0.3
   end
 
-  test "#decisions_equity returns 0.0 for neutral equity" do
+  test "#unmodified_decisions returns 0.0 for neutral equity" do
     decisions_path = "test/twoDecisions.json"
-    assert Equity.unmodified_decisions_equity(decisions_path) == 0.0
+    assert Equity.unmodified_decisions(decisions_path) == 0.0
   end
 
-  test "#person_total_equity returns equity after modifiers (without certainties)" do
+  test "#person_total returns equity after modifiers (without certainties)" do
     person = %Person{id: 1, genes: "Cmaf", survival_chance: 100}
     decisions_path = "test/naturalSelectionFiveDecisions.json"
-    assert Equity.person_total_equity(person, decisions_path) |> Float.round(2) == -2.86
+    assert Equity.person_total(person, decisions_path) |> Float.round(2) == -2.86
   end
 
-  test "#person_total_equity returns better equity with more favourable genes" do
+  test "#person_total returns better equity with more favourable genes" do
     person = %Person{id: 1, genes: "jQTZ", survival_chance: 100}
     decisions_path = "test/naturalSelectionFiveDecisions.json"
-    assert Equity.person_total_equity(person, decisions_path) |> Float.round(2) == 0.83
+    assert Equity.person_total(person, decisions_path) |> Float.round(2) == 0.83
+  end
+
+  test "#population_average returns average equity of a list of players" do
+    population = [%Person{id: 1, genes: "jQTZ", survival_chance: 100}, %Person{id: 1, genes: "Cmaf", survival_chance: 100}]
+    decisions_path = "test/naturalSelectionFiveDecisions.json"
+    assert Equity.population_average(population, decisions_path) |> Float.round(2) == -1.02
   end
 end
