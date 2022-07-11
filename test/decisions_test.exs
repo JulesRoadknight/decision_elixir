@@ -338,6 +338,44 @@ defmodule DecisionsTest do
     assert Decisions.matching_modifiers(person, modifiers) == 10
   end
 
+  test "#matching_modifiers can match from a range" do
+    person = %Person{id: 1, genes: "D"}
+    modifiers = [%{
+      "position" => 0,
+      "match" => "[A-E]",
+      "weight" => 99
+    }]
+
+    assert Decisions.matching_modifiers(person, modifiers) == 99
+  end
+
+  test "#matching_modifiers can match from multiple ranges" do
+    person = %Person{id: 1, genes: "yz"}
+    modifiers = [%{
+      "position" => 0,
+      "match" => "[A-E|x-z]",
+      "weight" => 15
+    },
+    %{
+      "position" => 1,
+      "match" => "[A-b|d-i|xyz]",
+      "weight" => 200
+    }]
+
+    assert Decisions.matching_modifiers(person, modifiers) == 215
+  end
+
+  test "#matching_modifiers can match multiple positions" do
+    person = %Person{id: 1, genes: "Daaaaa"}
+    modifiers = [%{
+      "position" => 0,
+      "match" => "[A-E]",
+      "weight" => 99
+    }]
+
+    assert Decisions.matching_modifiers(person, modifiers) == 99
+  end
+
   test "#apply_modifiers does not update chance when no modifiers" do
     person = %Person{id: 1, genes: "AaBa"}
     decisions = [%{

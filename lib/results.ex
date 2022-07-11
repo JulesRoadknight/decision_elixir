@@ -3,7 +3,7 @@ defmodule Results do
     Decisions.make_decision(person, decisions_path) |> match_decision_result(decisions_path)
   end
 
-  defp match_decision_result(decision, decisions_path) do
+  def match_decision_result(decision, decisions_path) do
     if decision == "Do nothing" do
       0
     else

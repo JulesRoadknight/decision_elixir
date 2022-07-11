@@ -14,11 +14,11 @@ defmodule ResultsTest do
     assert Results.decision_and_result(person, decisions_path) == 2
   end
 
-    test "it returns result for a certainty when valid" do
-      person = %Person{id: 1, genes: "Baaa"}
-      decisions_path = "test/fixedWhenFirstB.json"
-      assert Results.decision_and_result(person, decisions_path) == 11
-    end
+  test "it returns result for a certainty when valid" do
+    person = %Person{id: 1, genes: "Baaa"}
+    decisions_path = "test/fixedWhenFirstB.json"
+    assert Results.decision_and_result(person, decisions_path) == 11
+  end
 
   test "it returns a non-certainty" do
     person = %Person{id: 1, genes: "Faaa"}

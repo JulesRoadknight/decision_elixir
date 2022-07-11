@@ -147,10 +147,6 @@ defmodule NaturalSelectionTest do
       %Person{id: 1, genes: "abcd", survival_chance: 100},
       %Person{id: 2, genes: "wxyz", survival_chance: 51}
     ]
-    possible_child_outcomes = [
-      %Person{id: 12, genes: "abyz", survival_chance: 60},
-      %Person{id: 12, genes: "wxcd", survival_chance: 60}
-    ]
     input = %{
       "decisions" => "test/blankDecisions.json",
       "agents_total" => 5,

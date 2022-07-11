@@ -1,0 +1,22 @@
+[
+  {
+    "name": "First",
+    "result": 5
+  },
+  {
+    "name": "Second",
+    "result": 5
+  },
+  {
+    "name": "Third",
+    "result": -5
+  },
+  {
+    "name": "Fourth",
+    "result": -5
+  },
+  {
+    "name": "Fifth",
+    "result": -5
+  }
+]

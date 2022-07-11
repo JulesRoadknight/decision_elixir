@@ -1,0 +1,32 @@
+[
+    {
+        "name": "First",
+        "chance": 17
+    },
+    {
+        "name": "Second",
+        "chance": 30,
+        "modifiers": [{
+          "position": 0,
+          "match": "B",
+          "weight": 0  
+        },
+        {
+            "position": 0,
+            "match": "C",
+            "weight": 10
+          }]
+    },
+    {
+      "name": "Third",
+      "chance": 30
+    },
+    {
+      "name": "Fourth",
+      "chance": 13
+    },
+    {
+      "name": "Fifth",
+      "chance": 10
+    }
+]

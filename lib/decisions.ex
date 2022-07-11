@@ -32,11 +32,11 @@ defmodule Decisions do
 
   def matching_modifiers(person, modifiers) do
     Enum.reduce_while(modifiers, 0, fn modifier, acc ->
-      if String.at(person.genes, modifier["position"]) == modifier["match"], do: {:cont, acc + modifier["weight"]}, else: {:cont, acc}
+      if Regex.match?(~r/#{modifier["match"]}/, String.at(person.genes, modifier["position"])), do: {:cont, acc + modifier["weight"]}, else: {:cont, acc}
     end)
   end
 
-  defp sum_chance_of_choices(decisions) do
+  def sum_chance_of_choices(decisions) do
     Enum.reduce(decisions, 0, fn choice, acc -> choice["chance"] + acc end)
   end
 
